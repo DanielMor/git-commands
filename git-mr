@@ -1,0 +1,23 @@
+#!/bin/bash
+
+SOURCE=$(git branchname)
+TARGET="master"
+
+GITLAB_URL=$(git url)
+MERGE_URL="https://$GITLAB_URL/merge_requests/new?merge_request%5Bsource_branch%5D=$SOURCE&merge_request%5Btarget_branch%5D=$TARGET"
+
+echo "Create Merge Request to $SOURCE"
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  xdg-open $MERGE_URL
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  open $MERGE_URL
+elif [[ "$OSTYPE" == "cygwin" ]]; then
+  cygstart $MERGE_URL
+elif [[ "$OSTYPE" == "msys" ]]; then
+  start $MERGE_URL
+elif [[ "$OSTYPE" == "win32" ]]; then
+  start $MERGE_URL
+else
+  echo "Cannot recognize your OS"
+fi
