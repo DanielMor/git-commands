@@ -33,6 +33,6 @@ Create Merge Request to new-branch
 
 Confirm and submit
 
-# Instalation
+# Installation
 
 Copy the commands to a location in the $PATH, or create a new folder and add to your $PATH 
