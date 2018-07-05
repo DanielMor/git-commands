@@ -5,9 +5,9 @@ TARGET="master"
 REPO_URL=$(git url)
 
 if [[ $REPO_URL == *"gitlab"* ]]; then
-  MERGE_URL="https://$REPO_URL/merge_requests/new?merge_request%5Bsource_branch%5D=$SOURCE&merge_request%5Btarget_branch%5D=$TARGET"
+  MERGE_URL="$REPO_URL/merge_requests/new?merge_request%5Bsource_branch%5D=$SOURCE&merge_request%5Btarget_branch%5D=$TARGET"
 elif [[ $REPO_URL == *"github"* ]]; then
-  MERGE_URL="https://$REPO_URL/compare/$TARGET...$SOURCE?expand=1"
+  MERGE_URL="$REPO_URL/compare/$TARGET...$SOURCE?expand=1"
 else
   echo "Not support merge request to this remote"
   exit 1
@@ -27,4 +27,5 @@ elif [[ "$OSTYPE" == "win32" ]]; then
   start $MERGE_URL
 else
   echo "Cannot recognize your OS"
+  exit 1
 fi

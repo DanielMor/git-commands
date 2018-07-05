@@ -1,3 +1,12 @@
 #!/bin/bash
 
-git config remote.origin.url | cut -f2 -d@ | tr ":" / | rev | cut -d"." -f2- | rev
+# Removes .git
+REMOTE=$(git config remote.origin.url | rev | cut -d"." -f2- | rev)
+
+if [[ $REMOTE != *"https://"* ]]
+then
+  # Removes git@ and change : to /
+  REMOTE="https://$(echo $REMOTE | cut -f2 -d@ | tr : /)"
+fi
+
+echo $REMOTE
