@@ -1,11 +1,19 @@
 #!/bin/bash
 
 SOURCE=$(git branchname)
-TARGET="master"
+TARGET=$(git parent)
 REPO_URL=$(git url)
+TITLE=$SOURCE
+
+REGEX_BRANCHNAME="\/?(.*)\_([a-zA-Z]+\-[0-9]+)\-(.*)"
+
+if [[ $SOURCE =~ $REGEX_BRANCHNAME ]]
+then
+  TITLE=$(echo "%5B${BASH_REMATCH[2]}%5D%20${BASH_REMATCH[1]}:%20${BASH_REMATCH[3]}" | sed -e 's/-/%20/g')
+fi
 
 if [[ $REPO_URL == *"gitlab"* ]]; then
-  MERGE_URL="$REPO_URL/merge_requests/new?merge_request%5Bsource_branch%5D=$SOURCE&merge_request%5Btarget_branch%5D=$TARGET"
+  MERGE_URL="$REPO_URL/merge_requests/new?merge_request%5Bsource_branch%5D=$SOURCE&merge_request%5Btarget_branch%5D=$TARGET&merge_request%5Btitle%5D=$TITLE"
 elif [[ $REPO_URL == *"github"* ]]; then
   MERGE_URL="$REPO_URL/compare/$TARGET...$SOURCE?expand=1"
 else
@@ -13,7 +21,7 @@ else
   exit 1
 fi
 
-echo "Create Merge Request to $SOURCE"
+echo "Create Merge Request $SOURCE to $TARGET"
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   xdg-open $MERGE_URL
