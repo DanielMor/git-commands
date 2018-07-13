@@ -1,0 +1,18 @@
+#!/bin/bash
+
+URL=$(git url)
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  xdg-open $URL
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  open $URL
+elif [[ "$OSTYPE" == "cygwin" ]]; then
+  cygstart $URL
+elif [[ "$OSTYPE" == "msys" ]]; then
+  start $URL
+elif [[ "$OSTYPE" == "win32" ]]; then
+  start $URL
+else
+  echo "Cannot recognize your OS"
+  exit 1
+fi

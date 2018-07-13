@@ -1,0 +1,8 @@
+#!/bin/bash
+
+printf "\033[0;33mHi, $(whoami)\n"
+printf "\033[0;94mDate: $(date)\n\n"
+printf "\033[0mBranch:\n \033[0;32m* $(git branchname)\n\033[0m\n\033[0;91mChanges:\n\033[0m"
+
+git s
+echo "\n"

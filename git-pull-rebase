@@ -1,0 +1,27 @@
+#!/bin/bash
+
+OPTIONS=""
+
+if [[ $@ == *"-i"* ]]
+then
+  OPTIONS=" -i"
+fi
+
+git checkout master
+git pull
+git checkout -
+git rebase master $OPTIONS
+
+PS3="Want to push force?  > "
+
+select opt in "NO" "YES"; do
+  case $opt in
+    "YES")
+      git push -f
+      break
+      ;;
+    "NO")
+      break
+      ;;
+  esac
+done
