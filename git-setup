@@ -25,10 +25,14 @@ git config --global color.branch "auto"
 git config --global color.interactive "auto"
 git config --global color.ui "auto"
 
+git config --global help.autocorrect 1
+
 # Aliases
 git config --global alias.co "checkout"
 git config --global alias.s "status -s"
-git config --global alias.b "branch -v"
+git config --global alias.b "branch"
+git config --global alias.branchs "branch -v"
+git config --global alias.tags "tag -l"
 git config --global alias.r "remote -v"
 git config --global alias.t "tag -l"
 git config --global alias.d "difftool"
@@ -36,3 +40,4 @@ git config --global alias.clear "!git reset --hard HEAD; git clean -f"
 git config --global alias.ai "add -i"
 git config --global alias.adog "log --all --decorate --oneline --graph"
 git config --global alias.l20 "log --graph --pretty=format:'%C(blue)%h%C(reset) - %C(bold yellow)(%ad) - %Creset%s%Cgreen - [%cn] - %Cred%d' --decorate --date=relative -20"
+#git config --global alias.find "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
