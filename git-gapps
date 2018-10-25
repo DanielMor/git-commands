@@ -1,0 +1,100 @@
+#!/bin/bash
+
+run_help() {
+  echo "Global APPS Convention naming"
+  echo ""
+  echo "Usage: git gapps <subcommand> [options]"
+  echo "Commands:"
+  echo "  create [?options] <issue_id> <name>   Create a new branch for issue_id"
+  echo "    options:"
+  echo "      -t|--type feat|fix|chore          Change a type for the new branch"
+  echo ""
+  echo "  mr [?options]               Creates a Merge Request with the parent branch"
+  echo "    options:"
+  echo "      <id>|-o|--open <id>     Open the merge request id"
+  echo "      master|-m|--master      Creates a Merge Request to master"
+  echo "      -t|--target             Creates a Merge Request to master"
+  echo "      list                    Open merge requests page"
+  echo ""
+  echo "  <issue_id>                  Checkout to the branch with the issue id"
+  echo "  <issue_id> <name>           Alias for create command"
+  echo ""
+  echo "  --help|-h                   Show help"
+  echo ""
+}
+
+run_create() {
+  type="feat"
+
+  for i in "$@"
+  do
+    case $i in
+      -t=*|--type=*)
+        type="${i#*=}"
+        shift
+      ;;
+      -t|--type)
+        shift
+        type=$1
+        shift
+      ;;
+      *)
+
+      ;;
+    esac
+  done
+
+  id=$1
+  name=$2
+
+  if [[ "$type" != "fix" && "$type" != "chore" && "$type" != "feat" ]]
+  then
+    echo "Type '$type' is invalid"
+    exit 1
+  fi
+
+  if [[ -n ${id} && -n ${name} ]]
+  then
+    git checkout -b "${type}_GAPPS-$id-$name"
+  else
+    echo "issue id and name are required"
+    echo ""
+    echo " git gapps create <id> <name>"
+    exit 1
+  fi
+}
+
+run_mr() {
+  git mr $@
+}
+
+run() {
+  id=$1
+  branch="$(git branch -a --list *_GAPPS-$id-*)"
+
+  if [[ -n "${branch}" ]]
+  then
+    git checkout $(echo "$branch" | head -n 1)
+  else
+    run_create $@
+  fi
+}
+
+subcommand=$1
+
+case $subcommand in
+    ""|-h|--help)
+      run_help
+      ;;
+    create)
+      shift
+      run_create $@
+      ;;
+    mr)
+      shift
+      run_mr $@
+      ;;
+    *)
+      run $@
+      ;;
+esac
