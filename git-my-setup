@@ -1,0 +1,41 @@
+#!/bin/bash
+
+NAME=$1
+EMAIL=$2
+echo "Setup for $NAME - $EMAIL"
+
+# 
+git config --global user.name "${NAME}"
+git config --global user.email "${EMAIL}"
+
+git config --global core.eol lf
+git config --global core.autocrlf "input"
+git config --global core.editor "subl -n -w"
+
+git config --global push.default "current"
+
+git config --global color.diff "auto"
+git config --global color.status "auto"
+git config --global color.branch "auto"
+git config --global color.interactive "auto"
+git config --global color.ui "auto"
+
+# Aliases
+git config --global alias.master "checkout master"
+git config --global alias.c	"commit"
+git config --global alias.ca "commit --amend"
+git config --global alias.cm "commit -m"
+git config --global alias.co "checkout"
+git config --global alias.cb "checkout -b"
+git config --global alias.s "status -s"
+git config --global alias.b "branch -v"
+git config --global alias.ba "branch -av"
+git config --global alias.ai "add -i"
+git config --global alias.adog "log --all --decorate --oneline --graph"
+git config --global alias.l20 "log --graph --pretty=format:'%C(blue)%h%C(reset) - %C(bold yellow)(%ad) - %Creset%s%Cgreen - [%cn] - %Cred%d' --decorate --date=relative -20"
+git config --global alias.tags "tag -l"
+git config --global alias.r "remote -v"
+git config --global alias.p "push"
+git config --global alias.find "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+git config --global alias.coclean = "!git checkout . && git checkout"
+git config --global alias.clear "!git reset --hard HEAD; git clean -f"
